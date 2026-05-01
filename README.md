@@ -66,26 +66,26 @@ npx expo start --ios
 ## Screenshots
 
 ### Home Screen
-![Home Screen](Screenshot_20260501_103116.png)
+![Home Screen](Screenshot_20260501_103116.png){ width=45% }
 
 ### You Messages
-![You Messages](Screenshot_20260501_103140.png)
+![You Messages](Screenshot_20260501_103140.png){ width=45% }
 
 ### Love Messages
-![Love Messages](Screenshot_20260501_103153.png)
+![Love Messages](Screenshot_20260501_103153.png){ width=45% }
 
 ### Family Messages
-![Family Messages](Screenshot_20260501_103200.png)
+![Family Messages](Screenshot_20260501_103200.png){ width=45% }
 
 ### Friends Messages
-![Friends Messages](Screenshot_20260501_103206.png)
+![Friends Messages](Screenshot_20260501_103206.png){ width=45% }
 
 ### Home Messages
-![Home Messages](Screenshot_20260501_103212.png)
+![Home Messages](Screenshot_20260501_103212.png){ width=45% }
 
 ### School Messages
-![School Messages](Screenshot_20260501_103220.png)
+![School Messages](Screenshot_20260501_103220.png){ width=45% }
 
 ### Send Message Feature
-![Send Message](Screenshot_20260501_103748.png)
-![Send Message](Screenshot_20260501_103753.png)
+![Send Message](Screenshot_20260501_103748.png){ width=45% }
+![Send Message Result](Screenshot_20260501_103753.png){ width=45% }
