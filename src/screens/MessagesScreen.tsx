@@ -1,41 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { messages, categories } from "../data/messages";
+import { messages, categories, Message } from "../data/messages";
 
 export default function MessagesScreen({ route }: any) {
   const { categoryId, categoryName } = route.params;
-  const categoryMessages = messages[categoryId] || [];
   const category = categories.find((c) => c.id === categoryId);
+  const [messageList, setMessageList] = useState<Message[]>(messages[categoryId] || []);
+  const [inputText, setInputText] = useState("");
+
+  const sendMessage = () => {
+    const text = inputText.trim();
+    if (!text) return;
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const period = hours >= 12 ? "PM" : "AM";
+    const displayHours = hours % 12 || 12;
+    const newMsg: Message = {
+      id: Date.now().toString(),
+      sender: "Me",
+      content: text,
+      time: `${displayHours}:${minutes} ${period}`,
+    };
+    setMessageList([newMsg, ...messageList]);
+    setInputText("");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={[styles.headerIcon, { backgroundColor: category?.color }]}>
-          <Ionicons name={category?.icon as any} size={24} color="#fff" />
-        </View>
-        <Text style={styles.headerTitle}>{categoryName}</Text>
-      </View>
-      <FlatList
-        data={categoryMessages}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <View style={styles.messageCard}>
-            <View style={styles.messageHeader}>
-              <Text style={styles.sender}>{item.sender}</Text>
-              <Text style={styles.time}>{item.time}</Text>
-            </View>
-            <Text style={styles.content}>{item.content}</Text>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={90}
+      >
+        <View style={styles.header}>
+          <View style={[styles.headerIcon, { backgroundColor: category?.color }]}>
+            <Ionicons name={category?.icon as any} size={24} color="#fff" />
           </View>
-        )}
-      />
+          <Text style={styles.headerTitle}>{categoryName}</Text>
+        </View>
+        <FlatList
+          data={messageList}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => (
+            <View style={styles.messageCard}>
+              <View style={styles.messageHeader}>
+                <Text style={styles.sender}>{item.sender}</Text>
+                <Text style={styles.time}>{item.time}</Text>
+              </View>
+              <Text style={styles.content}>{item.content}</Text>
+            </View>
+          )}
+        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type a message..."
+            value={inputText}
+            onChangeText={setInputText}
+            onSubmitEditing={sendMessage}
+            returnKeyType="send"
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+            <Ionicons name="send" size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -99,5 +141,31 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#3C3C43",
     lineHeight: 22,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: "#E5E5EA",
+    backgroundColor: "#fff",
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#F2F2F7",
+    paddingHorizontal: 16,
+    fontSize: 15,
+  },
+  sendButton: {
+    marginLeft: 8,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#007AFF",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
